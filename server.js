@@ -55,6 +55,41 @@ app.delete('/employee/:id', (req, res) =>  {
 
 
 
+app.post('/employees', (req, res)=>{
+
+  let emp = req.body;
+  let sql = 'SET @EmpID = ?;SET @Name = ?; SET @EmpCode = ?; SET @Salary = ?;  \
+  CALL EmployeeAddOrEdit(@EmpID, @Name, @EmpCode, @Salary);';
+  mysqlConnection.query(
+    sql, [emp.EmpID, emp.Name , emp.EmpCode, emp.Salary],
+    (err, rows, field) =>{
+      if(!err) res.send(rows);
+      else console.log(err);
+
+    }
+  );
+})
+
+
+
+app.put('/employees', (req, res)=> {
+
+  let emp = req.body;
+  let sql = 'SET @EmpID = ?;set @nAME = ?;SET @Salary = ?; \
+  CALL EmployeeAddOrEdit(@EmpID, @Name, @EmpCod, @Salary);';
+  mysqlConnection.query(
+
+    sql, [emp.EmpID, emp.Name, emp.EmpCode, emp.Salary],
+    (err, rows, field) => {
+
+      if(!err)  res.send("Updated Successfully");
+      else console.log(err);
+    }
+  );
+});
+
+
+
 // app.get('/api/students', (req, res) => {
 //   const students = [
 //     { id: 1, firstName: 'Captain', lastName: 'fancy' },
